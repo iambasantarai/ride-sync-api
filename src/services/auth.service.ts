@@ -1,4 +1,5 @@
 import { User } from '../entities/user.entity';
+import { PasswordManager } from '../helpers/bcrypt.helper';
 
 export class AuthService {
   static async registerUser(
@@ -17,12 +18,14 @@ export class AuthService {
       throw new Error('Email is already been taken.');
     }
 
+    const hashedPassword = await PasswordManager.hashPassword(password);
+
     try {
       await User.save({
         username,
         email,
         phone,
-        password,
+        password: hashedPassword,
       });
     } catch (error) {
       console.log('ERROR: ', error);
@@ -31,9 +34,13 @@ export class AuthService {
   }
 
   static async loginUser(email: string, password: string) {
-    const user = await User.findOneOrFail({ where: { email, password } });
+    const user = await User.findOneOrFail({ where: { email } });
 
     if (!user) {
+      throw new Error('Invalid username or password.');
+    }
+
+    if (!(await PasswordManager.comparePassword(password, user.password))) {
       throw new Error('Invalid username or password.');
     }
 
