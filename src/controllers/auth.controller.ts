@@ -8,9 +8,9 @@ export class AuthController {
     try {
       await AuthService.registerUser(username, email, phone, password);
       res.status(201).json({ message: 'User registered successfully.' });
-    } catch (error) {
+    } catch (error: any) {
       console.log('ERROR: ', error);
-      res.sendStatus(500);
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -20,9 +20,9 @@ export class AuthController {
     try {
       const token = await AuthService.loginUser(email, password);
       res.status(200).json({ token });
-    } catch (error) {
+    } catch (error: any) {
       console.log('ERROR: ', error);
-      res.sendStatus(500);
+      res.status(500).json({ message: error.message });
     }
   }
 }
