@@ -1,5 +1,6 @@
 import { User } from '../entities/user.entity';
 import { PasswordManager } from '../helpers/bcrypt.helper';
+import { TokenManager } from '../helpers/jwt.helper';
 
 export class AuthService {
   static async registerUser(
@@ -44,6 +45,11 @@ export class AuthService {
       throw new Error('Invalid username or password.');
     }
 
-    return user;
+    const token = await TokenManager.generateToken({
+      userId: user.id,
+      email: user.email,
+    });
+
+    return token;
   }
 }

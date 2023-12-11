@@ -3,6 +3,8 @@ dotenv.config();
 
 export const port = process.env.PORT || 8000;
 
+export const jwtSecret = process.env.JWT_SECRET || 'jwtsecret69';
+
 export const db = {
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT ?? '5432', 10),
