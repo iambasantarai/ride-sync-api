@@ -1,11 +1,11 @@
 import express, { Application } from 'express';
+import 'reflect-metadata';
 import { port } from './utils/env.util';
 import { AppDataSource } from './config/data-source';
 import router from './routes';
 
 const app: Application = express();
 
-app.use('/api', router);
 AppDataSource.initialize()
   .then(() => {
     app.use(express.json());
