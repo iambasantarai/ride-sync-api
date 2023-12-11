@@ -6,7 +6,7 @@ export class TokenManager {
     return Jwt.sign(payload, jwtSecret, { expiresIn: '3h' });
   }
 
-  async verifyToken(token: string): Promise<JwtPayload> {
+  static async verifyToken(token: string): Promise<JwtPayload> {
     try {
       return Jwt.verify(token, jwtSecret) as JwtPayload;
     } catch (error) {
