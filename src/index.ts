@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import 'reflect-metadata';
+import cors from 'cors';
 import { port } from './utils/env.util';
 import { AppDataSource } from './config/data-source';
 import router from './routes';
@@ -9,6 +10,7 @@ const app: Application = express();
 AppDataSource.initialize()
   .then(() => {
     app.use(express.json());
+    app.use(cors());
 
     app.use('/api', router);
 
