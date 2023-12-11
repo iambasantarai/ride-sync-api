@@ -1,17 +1,26 @@
 import express, { Application } from 'express';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { port } from './utils/env.util';
+import { AppDataSource } from './config/data-source';
+import router from './routes';
 
 const app: Application = express();
 
-import router from './routes';
-
-const PORT = process.env.PORT || 8000;
-
 app.use('/api', router);
+AppDataSource.initialize()
+  .then(() => {
+    app.use(express.json());
 
-app.listen(PORT, (): void => {
-  console.log(`Listening on ${PORT}`);
-  console.log(`http://localhost:${PORT}`);
-});
+    app.use('/api', router);
+
+    console.log('=== uwu ===');
+    console.log('DATABASE CONNECTION ESTABLISHED!');
+    console.log('=== uwu ===');
+
+    app.listen(port, (): void => {
+      console.log(`Listening on ${port}`);
+      console.log(`http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log('ERROR: ', error);
+  });

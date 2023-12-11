@@ -1,13 +1,30 @@
 {
   "compilerOptions": {
+    "emitDecoratorMetadata": true,
     "target": "es2016",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
     "moduleResolution": "node",
+    "strictNullChecks": false,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "noImplicitAny": false,
     "strict": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": true,
+    "target": "es2020"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["./node_modules"]
 }
