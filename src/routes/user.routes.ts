@@ -4,9 +4,6 @@ import { UserController } from '../controllers/user.controller';
 
 const router = Router();
 
-// ensure authenticated
-router.use(authMiddleware);
-
-router.get('/profile', UserController.profile);
+router.get('/profile', authMiddleware, UserController.profile);
 
 export default router;

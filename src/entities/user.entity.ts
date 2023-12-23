@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import ModelEntity from './model.entity';
+import { Friendship } from './friendship.entity';
 
 @Entity({
   name: 'user',
@@ -32,4 +33,10 @@ export class User extends ModelEntity {
     type: 'text',
   })
   password: string;
+
+  @OneToMany(() => Friendship, (friendship) => friendship.sender)
+  sentFriendRequests: Friendship[];
+
+  @OneToMany(() => Friendship, (friendship) => friendship.receiver)
+  receivedFriendRequests: Friendship[];
 }
