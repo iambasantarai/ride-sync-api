@@ -22,12 +22,19 @@ export class AuthService {
     const hashedPassword = await PasswordManager.hashPassword(password);
 
     try {
-      await User.save({
+      const user = await User.save({
         username,
         email,
         phone,
         password: hashedPassword,
       });
+
+      const token = await TokenManager.generateToken({
+        userId: user.id,
+        email: user.email,
+      });
+
+      return token;
     } catch (error) {
       console.log('ERROR: ', error);
       throw new Error('Error registering user.');
