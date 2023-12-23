@@ -18,7 +18,7 @@ export const authMiddleware = async (
 
   try {
     const decodedUser = await TokenManager.verifyToken(token);
-    const userId = decodedUser.id;
+    const userId = decodedUser.userId;
 
     const user = await User.findOne({ where: { id: userId } });
 
