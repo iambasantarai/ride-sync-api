@@ -8,6 +8,7 @@ export class FriendshipService {
         sender: { id: sender.id },
         status: FriendshipStatus.ACCEPTED,
       },
+      relations: ['receiver'],
     });
 
     return friends;
