@@ -14,6 +14,18 @@ export class FriendshipService {
     return friends;
   }
 
+  static async getRequests(receiver: User) {
+    const requests = await Friendship.find({
+      where: {
+        status: FriendshipStatus.PENDING,
+        receiver: { id: receiver.id },
+      },
+      relations: ['sender'],
+    });
+
+    return requests;
+  }
+
   static async sendFriendRequest(sender: User, receiver: User) {
     if (sender.id === receiver.id) {
       throw new Error('Not possible to add yourself.');

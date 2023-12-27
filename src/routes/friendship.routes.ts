@@ -5,6 +5,7 @@ import { authMiddleware } from '../middlewares/auth.middleware';
 const router = Router();
 
 router.get('/', authMiddleware, FriendshipController.friends);
+router.get('/requests', authMiddleware, FriendshipController.requests);
 
 router.post(
   '/add/:userId',

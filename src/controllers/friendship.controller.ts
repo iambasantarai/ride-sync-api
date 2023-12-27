@@ -11,6 +11,18 @@ export class FriendshipController {
     res.status(200).json({ friends });
   }
 
+  static async requests(req: IRequestWithUser, res: Response) {
+    const user = req.user;
+    try {
+      const requests = await FriendshipService.getRequests(user as User);
+
+      res.status(200).json({ requests });
+    } catch (error: any) {
+      console.log('ERROR: ', error);
+      res.status(500).json({ message: error.message });
+    }
+  }
+
   static async sendFriendRequest(req: IRequestWithUser, res: Response) {
     const sender = req.user;
     const receiverId = req.params.userId;
