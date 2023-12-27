@@ -6,4 +6,6 @@ const router = Router();
 
 router.get('/profile', authMiddleware, UserController.profile);
 
+router.get('/', authMiddleware, UserController.getUserByName);
+
 export default router;
