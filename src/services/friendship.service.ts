@@ -2,16 +2,33 @@ import { Friendship, FriendshipStatus } from '../entities/friendship.entity';
 import { User } from '../entities/user.entity';
 
 export class FriendshipService {
-  static async getFriends(sender: User) {
-    const friends = await Friendship.find({
-      where: {
-        sender: { id: sender.id },
-        status: FriendshipStatus.ACCEPTED,
-      },
-      relations: ['receiver'],
+  static async getFriends(user: User) {
+    const friendships = await Friendship.find({
+      where: [
+        {
+          sender: { id: user.id },
+          status: FriendshipStatus.ACCEPTED,
+        },
+        {
+          receiver: { id: user.id },
+          status: FriendshipStatus.ACCEPTED,
+        },
+      ],
+      relations: ['sender', 'receiver'],
     });
 
-    return friends;
+    const friends = friendships.flatMap((friendship) => {
+      const sender = friendship.sender ? friendship.sender : null;
+      const receiver = friendship.receiver ? friendship.receiver : null;
+
+      return [sender, receiver];
+    });
+
+    const uniqueFriends = friends.filter(
+      (friend) => friend && friend.id !== user.id,
+    );
+
+    return uniqueFriends;
   }
 
   static async getRequests(receiver: User) {
