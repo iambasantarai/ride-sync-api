@@ -14,12 +14,10 @@ export class UserController {
   static async getUserByName(req: Request, res: Response) {
     const { username } = req.query;
 
-    if (!username) throw new Error('Name is required.');
-
     try {
       const user = await UserService.findUserByName(username as string);
 
-      return res.status(200).json(user);
+      return res.status(200).json({user});
     } catch (error: any) {
       console.log('ERROR: ', error);
       res.status(500).json({ message: error.message });
