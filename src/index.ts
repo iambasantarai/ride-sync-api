@@ -4,6 +4,7 @@ import cors from 'cors';
 import { port } from './utils/env.util';
 import { AppDataSource } from './config/data-source';
 import router from './routes';
+import { errorHandler } from './middlewares/errorHandler.middleware';
 
 const app: Application = express();
 
@@ -13,6 +14,8 @@ AppDataSource.initialize()
     app.use(cors());
 
     app.use('/api', router);
+
+    app.use(errorHandler);
 
     console.log('=== uwu ===');
     console.log('DATABASE CONNECTION ESTABLISHED!');

@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { IRequestWithUser } from '../types/user';
 import { FriendshipService } from '../services/friendship.service';
 import { User } from '../entities/user.entity';
+import { AppError } from '../helpers/error.helper';
 
 export class FriendshipController {
   static async friends(req: IRequestWithUser, res: Response) {
@@ -11,7 +12,11 @@ export class FriendshipController {
     res.status(200).json({ friends });
   }
 
-  static async requests(req: IRequestWithUser, res: Response) {
+  static async requests(
+    req: IRequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) {
     const user = req.user;
     try {
       const requests = await FriendshipService.getRequests(user as User);
@@ -19,11 +24,15 @@ export class FriendshipController {
       res.status(200).json({ requests });
     } catch (error: any) {
       console.log('ERROR: ', error);
-      res.status(500).json({ message: error.message });
+      next(new AppError(error.code, error.message));
     }
   }
 
-  static async sendFriendRequest(req: IRequestWithUser, res: Response) {
+  static async sendFriendRequest(
+    req: IRequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) {
     const sender = req.user;
     const receiverId = req.params.userId;
 
@@ -41,11 +50,15 @@ export class FriendshipController {
       });
     } catch (error: any) {
       console.log('ERROR: ', error);
-      res.status(500).json({ message: error.message });
+      next(new AppError(error.code, error.message));
     }
   }
 
-  static async acceptFriendRequest(req: IRequestWithUser, res: Response) {
+  static async acceptFriendRequest(
+    req: IRequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) {
     const user = req.user;
     const requestId = req.params.requestId;
 
@@ -57,11 +70,15 @@ export class FriendshipController {
       });
     } catch (error: any) {
       console.log('ERROR: ', error);
-      res.status(500).json({ message: error.message });
+      next(new AppError(error.code, error.message));
     }
   }
 
-  static async declineFriendRequest(req: IRequestWithUser, res: Response) {
+  static async declineFriendRequest(
+    req: IRequestWithUser,
+    res: Response,
+    next: NextFunction,
+  ) {
     const user = req.user;
     const requestId = req.params.requestId;
 
@@ -73,7 +90,7 @@ export class FriendshipController {
       });
     } catch (error: any) {
       console.log('ERROR: ', error);
-      res.status(500).json({ message: error.message });
+      next(new AppError(error.code, error.message));
     }
   }
 }
