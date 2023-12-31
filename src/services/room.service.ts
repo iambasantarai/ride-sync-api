@@ -7,12 +7,13 @@ export class RoomService {
       where: {
         creator: { id: user.id },
       },
+      relations: ['creator', 'participants'],
     });
 
     return rooms;
   }
 
-  static async createRoom(user: User, name: string) {
+  static async create(user: User, name: string) {
     const existingRoom = await Room.findOne({
       where: { name },
     });
@@ -29,7 +30,50 @@ export class RoomService {
     return newRoom;
   }
 
-  static async deleteRoom(roomId: string) {
+  static async join(roomId: string, user: User) {
+    const room = await Room.findOne({
+      where: { id: roomId },
+      relations: ['participants'],
+    });
+
+    if (!room) {
+      throw new Error('Room not found.');
+    }
+
+    room.participants = room.participants || [];
+
+    const isUserInRoom = room.participants.some(
+      (participant) => participant.id === user.id,
+    );
+
+    if (!isUserInRoom) {
+      room.participants.push(user);
+      await Room.save(room);
+    }
+
+    return room;
+  }
+
+  static async leave(roomId: string, user: User) {
+    const room = await Room.findOne({
+      where: { id: roomId },
+      relations: ['participants'],
+    });
+
+    if (!room) {
+      throw new Error('Room not found.');
+    }
+
+    room.participants = room?.participants?.filter(
+      (participant) => participant.id !== user.id,
+    );
+
+    await Room.save(room);
+
+    return room;
+  }
+
+  static async delete(roomId: string) {
     const room = await Room.findOne({
       where: { id: roomId },
     });

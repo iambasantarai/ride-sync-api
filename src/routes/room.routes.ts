@@ -6,5 +6,6 @@ const router = Router();
 
 router.get('/', authMiddleware, RoomController.rooms);
 router.post('/', authMiddleware, RoomController.createRoom);
-router.delete('/:roomId', authMiddleware, RoomController.deleteRoom);
+router.post('/:roomId/join', authMiddleware, RoomController.joinRoom);
+router.post('/:roomId/leave', authMiddleware, RoomController.leaveRoom);
 export default router;
