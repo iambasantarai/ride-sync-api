@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { IRequestWithUser } from '../types/user';
 import { AppError } from '../helpers/error.helper';
 import { RoomService } from '../services/room.service';
@@ -29,6 +29,19 @@ export class RoomController {
       const room = await RoomService.createRoom(user as User, name);
 
       res.status(200).json({ room });
+    } catch (error: any) {
+      console.log('ERROR: ', error);
+      next(new AppError(error.code, error.message));
+    }
+  }
+
+  static async deleteRoom(req: Request, res: Response, next: NextFunction) {
+    const roomId = req.params.roomId;
+
+    try {
+      await RoomService.deleteRoom(roomId);
+
+      res.status(200).json({ message: 'Room deleted successfully.' });
     } catch (error: any) {
       console.log('ERROR: ', error);
       next(new AppError(error.code, error.message));

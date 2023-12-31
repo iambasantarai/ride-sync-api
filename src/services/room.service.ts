@@ -28,4 +28,16 @@ export class RoomService {
 
     return newRoom;
   }
+
+  static async deleteRoom(roomId: string) {
+    const room = await Room.findOne({
+      where: { id: roomId },
+    });
+
+    if (!room) {
+      throw new Error('Room not found.');
+    }
+
+    await Room.delete({ id: room.id });
+  }
 }
