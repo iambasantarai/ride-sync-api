@@ -20,7 +20,7 @@ export class Room extends ModelEntity {
   @JoinColumn({ name: 'creatorId' })
   creator: User;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, { nullable: true })
   @JoinTable()
   participants: User[];
 }
