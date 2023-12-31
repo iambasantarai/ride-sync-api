@@ -1,17 +1,26 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import ModelEntity from './model.entity';
+import { User } from './user.entity';
 
-@Entity()
-export class Room extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+@Entity({
+  name: 'room',
+})
+export class Room extends ModelEntity {
   @Column()
   name: string;
 
-  
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'creatorId' })
+  creator: User;
 
-  static createRoom(name: string): Promise<Room> {
-    const room = this.create({ name });
-    return room.save();
-  }
+  @ManyToMany(() => User)
+  @JoinTable()
+  participants: User[];
 }
