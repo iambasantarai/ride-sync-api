@@ -28,7 +28,7 @@ export class RoomController {
     try {
       const room = await RoomService.create(user as User, name);
 
-      res.status(200).json({ room });
+      res.status(200).json({ room, message: 'Room created successfully.' });
     } catch (error: any) {
       console.log('ERROR: ', error);
       next(new AppError(error.code, error.message));
