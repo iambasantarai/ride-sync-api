@@ -1,27 +1,12 @@
+// message.entity.ts
+import ModelEntity from './model.entity';
+import { Entity, Column } from 'typeorm';
 
+@Entity()
+export class Message extends ModelEntity {
+  @Column()
+  sender: string;
 
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from './user.entity';
-
-@Entity({
-  name: 'message',
-})
-export class Message {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({
-    type: 'text',
-  })
+  @Column('text')
   text: string;
-
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @Column({ name: 'user_id' })
-  userId: string;
-
-  @Column({ name: 'room_id' })
-  roomId: string;
 }
