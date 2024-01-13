@@ -30,7 +30,7 @@ export class RoomService {
     return newRoom;
   }
 
-  static async join(roomId: string, user: User) {
+  static async add(roomId: string, user: User) {
     const room = await Room.findOne({
       where: { id: roomId },
       relations: ['participants'],

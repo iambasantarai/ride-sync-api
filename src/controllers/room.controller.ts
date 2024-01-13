@@ -35,7 +35,7 @@ export class RoomController {
     }
   }
 
-  static async joinRoom(
+  static async addToRoom(
     req: IRequestWithUser,
     res: Response,
     next: NextFunction,
@@ -44,9 +44,11 @@ export class RoomController {
     const roomId = req.params.roomId;
 
     try {
-      const room = await RoomService.join(roomId, user as User);
+      const room = await RoomService.add(roomId, user as User);
 
-      res.status(200).json({ message: 'Successfully joined the room.', room });
+      res
+        .status(200)
+        .json({ message: 'Successfully added to the room.', room });
     } catch (error: any) {
       console.log('ERROR: ', error);
       next(new AppError(error.code, error.message));
