@@ -81,6 +81,19 @@ export class RoomService {
     return room;
   }
 
+  static async getRoom(roomId: string) {
+    const room = await Room.findOne({
+      where: { id: roomId },
+      relations: ['creator', 'participants'],
+    });
+
+    if (!room) {
+      throw new Error('Room not found.');
+    }
+
+    return room;
+  }
+
   static async delete(roomId: string) {
     const room = await Room.findOne({
       where: { id: roomId },

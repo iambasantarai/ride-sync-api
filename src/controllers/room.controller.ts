@@ -74,6 +74,19 @@ export class RoomController {
     }
   }
 
+  static async getRoom(req: Request, res: Response, next: NextFunction) {
+    const roomId = req.params.roomId;
+
+    try {
+      const room = await RoomService.getRoom(roomId);
+
+      res.status(200).json({ message: 'Room fetched successfully.', room });
+    } catch (error: any) {
+      console.log('ERROR: ', error);
+      next(new AppError(error.code, error.message));
+    }
+  }
+
   static async deleteRoom(req: Request, res: Response, next: NextFunction) {
     const roomId = req.params.roomId;
 
