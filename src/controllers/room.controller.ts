@@ -11,6 +11,7 @@ export class RoomController {
       const rooms = await RoomService.getRooms(user as User);
 
       res.status(200).json({ rooms });
+      console.log(rooms);
     } catch (error: any) {
       console.log('ERROR: ', error);
       next(new AppError(error.code, error.message));
