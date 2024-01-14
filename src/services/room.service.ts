@@ -30,24 +30,32 @@ export class RoomService {
     return newRoom;
   }
 
-  static async add(roomId: string, user: User) {
+  static async add(roomId: string, friendId: string, user: User) {
     const room = await Room.findOne({
       where: { id: roomId },
-      relations: ['participants'],
+      relations: ['participants', 'creator'],
+    });
+
+    const friend = await User.findOne({
+      where: { id: friendId },
     });
 
     if (!room) {
       throw new Error('Room not found.');
     }
 
+    if (user.id !== room.creator.id) {
+      throw new Error('You are not authorized to perform this action.');
+    }
+
     room.participants = room.participants || [];
 
     const isUserInRoom = room.participants.some(
-      (participant) => participant.id === user.id,
+      (participant) => participant.id === friendId,
     );
 
     if (!isUserInRoom) {
-      room.participants.push(user);
+      room.participants.push(friend as User);
       await Room.save(room);
     }
 

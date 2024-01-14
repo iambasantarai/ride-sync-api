@@ -42,9 +42,10 @@ export class RoomController {
   ) {
     const user = req.user;
     const roomId = req.params.roomId;
+    const friendId = req.params.friendId;
 
     try {
-      const room = await RoomService.add(roomId, user as User);
+      const room = await RoomService.add(roomId, friendId, user as User);
 
       res
         .status(200)
